@@ -1,52 +1,56 @@
-# 📘 **HL7 ADT A04 → DICOM Modality Worklist (MWL) Transformer**
-*A Mirth Connect project converting HL7 radiology registrations into DICOM-style MWL JSON entries.*
+# 📘 HL7 ADT A04 → DICOM Modality Worklist (MWL) Transformation  
+*A production‑quality Mirth Connect project for converting HL7 v2.x Radiology Registration messages into structured DICOM MWL‑style JSON.*
 
 ---
 
-## 🩺 **Project Overview**
+## 🔎 Overview
 
-This project demonstrates a real healthcare interoperability workflow:
+Modern imaging systems rely on **DICOM Modality Worklist (MWL)** to automatically pull patient, visit, and procedure information into modalities such as **X‑Ray, CT, MRI, and Ultrasound**.  
+However, many hospital systems primarily communicate via **HL7 v2.x ADT/ORM messages** — which creates a gap.
 
-**HL7 ADT A04 (Radiology Registration)** → **Mirth Connect Transformer** → **DICOM Modality Worklist–style JSON**
-
-Hospital imaging departments rely on **Modality Worklist (MWL)** so imaging devices (CR, CT, MRI, US) can automatically pull patient and procedure data.  
-Since many clinical systems send **HL7 v2.x** messages, an integration engine must convert HL7 into MWL-friendly structures.
-
-This project delivers exactly that: a complete HL7→MWL transformation pipeline built in **Mirth Connect**.
+This project implements a clean, maintainable, and professionally structured **HL7 ADT A04 → MWL JSON transformation** using **Mirth Connect**, mirroring real‑world radiology workflow integrations performed in hospitals and imaging centers.
 
 ---
 
-## 🎯 **Key Features**
+## 🚀 What This Project Provides
 
-✔ Converts HL7 ADT A04 messages into MWL JSON  
-✔ Extracts PID, PV1, OBR, and OBX radiology information  
-✔ Produces structured JSON representing a MWL worklist item  
-✔ Implemented entirely in **Mirth Connect** using JavaScript  
-✔ Includes HL7 sample input and JSON sample output  
-✔ Includes exported Mirth channel (.xml)  
-✔ Fully documented with screenshots for reproducibility  
-✔ Perfect for resumes and healthcare IT portfolios  
+- **Full HL7 → MWL JSON transformation** using a custom JavaScript transformer in Mirth Connect  
+- **Accurate extraction** of demographic, visit, order, and observation details  
+- **MWL‑style JSON output** structured to match real‑world DICOM MWL worklist requirements  
+- **Clean, organized repository structure** for recruiters and engineers  
+- **Complete Mirth channel export (.xml)** for instant import  
+- **Screenshot‑documented configuration** of:
+  - Channel summary  
+  - File reader  
+  - Transformer  
+  - File writer  
+  - Output validation  
+
+This project reflects a **professional, production‑ready integration** rather than a simple tutorial script.
 
 ---
 
-## ⚙️ **Architecture Flow**
+## ⚙️ Architecture Flow (High-Level)
 
 ```
-HL7 ADT A04 (.txt file)
-            ↓
-     Mirth Connect Channel
-   Source: File Reader
-            ↓
- Transformer (JavaScript)
-  HL7 → MWL JSON mapping
-            ↓
- Destination: File Writer
- Outputs: mwl_sample_output.json
+HL7 ADT A04 Message (.txt)
+      ↓
+Mirth Connect Channel
+      ↓
+Source Connector: File Reader
+      ↓
+JavaScript Transformer
+      ↓
+MWL JSON Builder (channelMap.put)
+      ↓
+Destination Connector: File Writer
+      ↓
+Output JSON Worklist Entry
 ```
 
 ---
 
-## 📁 **Repository Structure**
+## 📁 Repository Structure
 
 ```
 hl7-adt-to-dicom-mwl/
@@ -77,103 +81,144 @@ hl7-adt-to-dicom-mwl/
 
 ---
 
-## 🧩 **HL7 → MWL Field Mapping**
+## 🖼️ Screenshot Documentation (Inline with Descriptions)
 
-| MWL Field | HL7 Field | Description |
-|----------|-----------|-------------|
-| PatientID | PID-3.1 | MRN |
-| AssigningAuthority | PID-3.4 | MRN Issuer |
-| PatientName | PID-5 | Last^First^Middle |
-| BirthDate | PID-7 | Date of Birth |
-| Sex | PID-8 | Gender |
-| Address | PID-11 | Street/City/State/Zip |
-| Phone | PID-13 | Contact number |
-| VisitNumber | PV1 | Visit/Encounter ID |
-| Location | PV1-3 | Point of care, room, bed |
-| ProcedureCode | OBR-4 | CPT / internal code |
-| ProcedureDescription | OBX-5 or OBR-4 | Human-readable text |
-| ScheduledDateTime | OBR-7 | Imaging appointment time |
-| PerformingPhysician | OBR-14 | Ordering/Performing provider |
-| MessageControlID | MSH-10 | Unique message ID |
+### **1. Channel Summary**
+![Channel Summary](screenshots/channel_summary.png)
+
+This view outlines the channel’s metadata, message storage configuration, pruning policy, and custom metadata fields. It demonstrates proper professional setup for a production HL7 interface.
 
 ---
 
-## 🧪 **Sample Input**
+### **2. File Reader – Part 1**
+![File Reader Settings](screenshots/file_reader_settings.png)
 
-```
-sample-hl7/ADT_A04_Radiology_Registration.txt
-```
-
----
-
-## 📤 **Sample Output**
-
-```
-sample-output/mwl_sample_output.json
-```
+The File Reader is configured to ingest HL7 `.txt` files from the project input directory.  
+Key items demonstrated:
+- Interval polling  
+- Source queue handling  
+- Clean file movement (Processed/Error)  
 
 ---
 
-## 🛠️ **How to Run**
+### **3. File Reader – Part 2**
+![File Reader Settings Part 2](screenshots/file_reader_settings_part2.png)
 
-### **1. Import the channel**
-Go to:  
-**Mirth → Channels → Import**  
-Select:
-```
-channel/HL7_ADT_to_DICOM_MWL.xml
-```
+Advanced file handling settings and move-to directories are shown here.  
+This ensures:
+- Error isolation  
+- Consistent processing  
+- Predictable file lifecycle  
 
-### **2. Configure Source (File Reader)**
-Reads `.txt` HL7 files from your Input folder or `sample-hl7/`.
+---
 
-### **3. Transformer**
-Runs the JavaScript logic in:
-```
-src/transformer.js
-```
-Produces `mwlJson` via:
-```
-channelMap.put("mwlJson", builtJsonString)
-```
+### **4. JavaScript Transformer**
+![Transformer Code](screenshots/transformer_code.png)
 
-### **4. Destination (File Writer)**
-Outputs JSON to:
-```
-sample-output/
-```
-Filename pattern:
+Custom JavaScript logic extracts PID, PV1, OBR, and OBX information from the HL7 v2 message and constructs a DICOM MWL-style JSON object.  
+This is the core engine converting a registration into an MWL worklist entry.
+
+---
+
+### **5. File Writer – Destination Configuration**
+![File Writer Settings](screenshots/file_writer_settings.png)
+
+The File Writer outputs structured MWL JSON files using a safe filename pattern:
 ```
 mwl_${message.id}.json
 ```
 
-### **5. Run the channel**
-Drop in any HL7 file → JSON is generated automatically.
+---
+
+### **6. File Writer – Template (JSON Output)**
+![File Writer Template](screenshots/file_writer_template.png)
+
+The destination template injects the channelMap JSON directly into the produced file.
 
 ---
 
-## 📸 **Screenshots**
-See `/screenshots` folder for:
-- Channel summary  
-- File Reader settings  
-- File Writer settings  
-- Transformer code  
-- Output preview  
+### **7. Sample Output JSON Preview**
+![Output JSON Preview](screenshots/output_json_preview.png)
+
+Example of a successfully transformed MWL entry representing:
+- Patient demographics  
+- Visit context  
+- Procedure description and code  
+- Scheduled step information  
 
 ---
 
-## 💼 **Resume Summary**
+## 🧩 HL7 → MWL Mapping Logic
 
-**HL7 to DICOM MWL Integration — Mirth Connect**  
-Developed an HL7 ADT A04 → DICOM MWL transformation interface using Mirth Connect. Implemented a custom JavaScript transformer to parse PID, PV1, OBR, and OBX segments and generate MWL‑compliant JSON including Patient, Visit, Requested Procedure, and Scheduled Procedure Step modules. Delivered full channel configuration, sample HL7 input, JSON output, and documentation for a portfolio‑ready healthcare integration project.
+The transformation is built using clinically accurate mappings consistent with MWL modules.
+
+| MWL Element | HL7 Field | Description |
+|------------|-----------|-------------|
+| PatientID | PID‑3.1 | MRN from sending system |
+| AssigningAuthority | PID‑3.4 | MRN issuer |
+| PatientName | PID‑5 | Last, First, Middle |
+| DateOfBirth | PID‑7 | DOB |
+| Sex | PID‑8 | Gender |
+| Address | PID‑11 | Full demographic address |
+| PhoneNumber | PID‑13 | Contact telephone |
+| VisitNumber | PV1 | Encounter/registration number |
+| Location | PV1‑3 | Point of care, room, bed |
+| RequestedProcedureID | OBR‑2 | Order placer ID |
+| ScheduledProcedure | OBR‑7 | Imaging appointment datetime |
+| ProcedureDescription | OBX‑5 | Human-readable text |
+| ProcedureCode | OBR‑4 | Code (XR, MRI, CT, etc.) |
+| PerformingPhysician | OBR‑14 | Ordering clinician |
+| MessageControlID | MSH‑10 | Unique HL7 ID |
 
 ---
 
-## 🚀 **Future Enhancements**
-- Support ORM^O01 orders  
-- Multi-OBR study support  
-- True DICOM MWL SCP integration  
-- Orthanc MWL plugin compatibility  
-- Docker deployment for Mirth  
+## ▶️ How to Run the Project
+
+### **1. Import the Channel**
+In Mirth Connect:
+```
+Channels → Import Channel → channel/HL7_ADT_to_DICOM_MWL.xml
+```
+
+### **2. Start the Channel**
+
+### **3. Drop any `.txt` HL7 message into your Input folder**
+
+### **4. Resulting JSON will appear in `sample-output/` (or your configured output directory)**
 
 ---
+
+## 📂 Included Files
+
+### **HL7 Input**
+`sample-hl7/ADT_A04_Radiology_Registration.txt`
+
+### **MWL Output JSON**
+`sample-output/mwl_sample_output.json`
+
+### **Full Channel Export**
+`channel/HL7_ADT_to_DICOM_MWL.xml`
+
+### **Transformer JavaScript**
+`src/transformer.js`
+
+---
+
+## 📌 Purpose of This Project
+
+This repository demonstrates a **real, production-style HL7→DICOM Worklist integration**, showcasing skills in:
+
+- HL7 v2.x interpretation  
+- DICOM workflow understanding  
+- Mirth Connect development  
+- JavaScript-based message transformation  
+- Healthcare interoperability engineering  
+- Clean repo organization + professional documentation  
+
+A recruiter, hiring manager, or senior engineer can import this channel and immediately understand your competence in healthcare integration.
+
+---
+
+## 📫 Contact  
+For enhancements or professional collaboration, feel free to open an issue or reach out through GitHub.
+
