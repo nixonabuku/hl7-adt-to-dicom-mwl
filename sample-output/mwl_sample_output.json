@@ -1,0 +1,50 @@
+{
+  "Patient": {
+    "PatientID": "98765432",
+    "AssigningAuthority": "HOSPITAL1",
+    "PatientName": "DOE^JANE^MARIE",
+    "PatientSex": "F",
+    "PatientBirthDate": "19870412",
+    "PatientAddress": {
+      "Street": "123 BLUEBIRD LN",
+      "City": "NEWARK",
+      "State": "NJ",
+      "Zip": "07104",
+      "Country": "USA"
+    },
+    "PatientPhone": "(973)555-3421"
+  },
+  "Visit": {
+    "PatientClass": "O",
+    "VisitNumber": "VST4321987",
+    "Location": {
+      "PointOfCare": "RAD",
+      "Room": "RM3",
+      "Bed": "B1",
+      "Facility": "HOSPITAL1"
+    },
+    "AdmitDateTime": "20250201103000"
+  },
+  "RequestedProcedure": {
+    "RequestedProcedureID": "VST4321987",
+    "RequestedProcedureDescription": "Chest X-Ray PA Lateral",
+    "RequestedProcedureCode": {
+      "CodeValue": "XRCHEST",
+      "CodeMeaning": "Chest X-Ray PA LAT",
+      "CodingSchemeDesignator": "L"
+    },
+    "ScheduledProcedureStep": {
+      "StartDateTime": "20250201113000",
+      "Modality": "CR",
+      "StationAETitle": "XRAY_ROOM_3",
+      "PerformingPhysicianName": "SMITH^ROBERT^J"
+    }
+  },
+  "Meta": {
+    "HL7MessageControlId": "MSG20250201-103045",
+    "CreationDateTime": "20250201103045",
+    "SourceSystem": "REGSYS",
+    "ReceivingSystem": "RADSYS",
+    "ObservationDate": "20250201"
+  }
+}
